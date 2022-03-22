@@ -9,9 +9,6 @@ app = Flask(__name__)
 def home():
     return "Hello, Flask!"
 
-
-
-
 @app.route("/hello/")
 @app.route("/hello/<name>")
 def hello_there(name = None):
@@ -20,10 +17,11 @@ def hello_there(name = None):
         name=name
     )
 
-
-
 @app.route("/testarea")
 def testTemp():
     return render_template(
         "home.html"
     )
+
+if __name__ == '__main__':
+    app.run()
