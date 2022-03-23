@@ -20,7 +20,7 @@
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
     crossorigin="anonymous"></script>
 
-    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
 
   <title>Knowledge Scrape!</title>
 </head>
@@ -28,8 +28,9 @@
 <body>
 
   <!-- BEGIN NAVBAR -->
-  <nav class="navbar navbar-expand-lg navbar-dark  justify-content-between "  style="background-color: rgb(22, 92, 31);">
-    <a class="navbar-brand" href="#"><img src="{{ url_for('static', filename='images/logo2.png') }}" width="100%" height="auto"></a>
+  <nav class="navbar navbar-expand-lg navbar-dark  justify-content-between " style="background-color: rgb(22, 92, 31);">
+    <a class="navbar-brand" href="#"><img src="{{ url_for('static', filename='images/logo2.png') }}" width="100%"
+        height="auto"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
       aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -70,22 +71,22 @@
       {%else%}
 
       <!--  HTML for login button goes here -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <div class="navbar-nav ms-auto mb-2 mb-lg-1">
-        <button type="button" class="btn btn-secondary btn-lg btn-margin-right">Login</button>
-        <button type="button" class="btn btn-secondary btn-lg btn-margin-right">Sign up</button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav ms-auto mb-2 mb-lg-1">
+          <button type="button" class="btn btn-secondary btn-lg btn-margin-right">Login</button>
+          <button type="button" class="btn btn-secondary btn-lg btn-margin-right">Sign up</button>
 
-        <!-- This is where we can add more links if need be -->
-        
+          <!-- This is where we can add more links if need be -->
+
+        </div>
+
+
+        {% endif%}
+
+
+
+        <!-- End right align for drop down -->
       </div>
-
-
-      {% endif%}
-
-
-
-      <!-- End right align for drop down -->
-    </div>
   </nav>
   <!-- END NAVBAR -->
 
@@ -94,6 +95,29 @@
   Test body area. Will be modifying this.
 
 
+    <!-- Content here -->
+
+    <div class="container d-flex justify-content-center" style="margin-top: 8%;">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="row">
+          <div id="logo" class="text-center">
+            <h1>Search</h1>
+          </div>
+          <form role="form" id="form-buscar">
+            <div class="form-group">
+              <div class="input-group">
+                <input id="1" class="form-control" type="text" name="search" placeholder="Search..." required />
+                <span class="input-group-btn">
+                  <button class="btn btn-success" type="submit">
+                    <i class="glyphicon glyphicon-search" aria-hidden="true"></i> Search
+                  </button>
+                </span>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
 
 
 
@@ -104,7 +128,7 @@
 
 
 <footer class="text-center text-white fixed-bottom">
-  
+
   <div class="text-center p-3" style="background-color: rgb(22, 92, 31);">
     © 2022 Knowledge Scrape |
     <a class="text-white" href="https://www.charlotte.edu/">University of North Carolina at Charlotte</a>
