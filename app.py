@@ -5,8 +5,8 @@ connection = sqlite3.connect('Users.db')
 cursor = connection.cursor()
 cursor = connection.cursor()
 cursor.execute('''CREATE TABLE IF NOT EXISTS Users
-              (Username, password)''')
+              (ID,Username, password)''')
 cursor.execute('''CREATE TABLE IF NOT EXISTS Bookmarks
-              (Username, bookmark)''')
+              (ID, bookmark)''')
 connection.commit()
 connection.close()
