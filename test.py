@@ -20,8 +20,9 @@ def hello_there(name = None):
 @app.route("/testarea")
 def testTemp():
     return render_template(
-        "home.html"
+        "index.html"
     )
 
 if __name__ == '__main__':
     app.run()
+    
