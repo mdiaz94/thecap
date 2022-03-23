@@ -20,6 +20,8 @@
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
     crossorigin="anonymous"></script>
 
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+
   <title>Knowledge Scrape!</title>
 </head>
 
@@ -27,16 +29,16 @@
 
   <!-- BEGIN NAVBAR -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-success justify-content-between ">
-    <a class="navbar-brand" href="#"><img src="{{ url_for('static', filename='images/logo.png') }}" style="width:50%"></a>
+    <a class="navbar-brand" href="#"><img src="{{ url_for('static', filename='images/logo.png') }}" width="25%" height="auto"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
       aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <button type="button" class="btn btn-secondary btn-lg active">Home</button>
-        <button type="button" class="btn btn-secondary btn-lg">Topics</button>
-        <button type="button" class="btn btn-secondary btn-lg">Accounts</button>
+        <button type="button" class="btn btn-secondary btn-lg active btn-margin-left">Home</button>
+        <button type="button" class="btn btn-secondary btn-lg btn-margin-left">Topics</button>
+        <button type="button" class="btn btn-secondary btn-lg btn-margin-left">Accounts</button>
         <a class="nav-item nav-link disabled" href="#">Profile</a>
         <!-- This is where we can add more links if need be -->
 
@@ -70,8 +72,8 @@
       <!--  HTML for login button goes here -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <div class="navbar-nav ms-auto mb-2 mb-lg-1">
-        <button type="button" class="btn btn-secondary btn-lg">Login</button>
-        <button type="button" class="btn btn-secondary btn-lg">Sign up</button>
+        <button type="button" class="btn btn-secondary btn-lg btn-margin-left">Login</button>
+        <button type="button" class="btn btn-secondary btn-lg btn-margin-left">Sign up</button>
 
         <!-- This is where we can add more links if need be -->
         
