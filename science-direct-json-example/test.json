@@ -1,0 +1,96 @@
+{
+    "search-results": {
+        "opensearch:totalResults": "140",
+        "opensearch:startIndex": "0",
+        "opensearch:itemsPerPage": "2",
+        "opensearch:Query": {
+            "@role": "request",
+            "@searchTerms": "title(quantum) AND srctitle(laser)",
+            "@startPage": "0"
+        },
+        "link": [
+            {
+                "@_fa": "true",
+                "@ref": "self",
+                "@href": "https://api.elsevier.com/content/search/sciencedirect?start=0&count=2&query=title%28quantum%29+AND+srctitle%28laser%29&count=2",
+                "@type": "application/json"
+            },
+            {
+                "@_fa": "true",
+                "@ref": "first",
+                "@href": "https://api.elsevier.com/content/search/sciencedirect?start=0&count=2&query=title%28quantum%29+AND+srctitle%28laser%29&count=2",
+                "@type": "application/json"
+            },
+            {
+                "@_fa": "true",
+                "@ref": "next",
+                "@href": "https://api.elsevier.com/content/search/sciencedirect?start=2&count=2&query=title%28quantum%29+AND+srctitle%28laser%29&count=2",
+                "@type": "application/json"
+            },
+            {
+                "@_fa": "true",
+                "@ref": "last",
+                "@href": "https://api.elsevier.com/content/search/sciencedirect?start=138&count=2&query=title%28quantum%29+AND+srctitle%28laser%29&count=2",
+                "@type": "application/json"
+            }
+        ],
+        "entry": [
+            {
+                "@_fa": "true",
+                "load-date": "2012-12-02T00:00:00Z",
+                "link": [
+                    {
+                        "@_fa": "true",
+                        "@ref": "self",
+                        "@href": "https://api.elsevier.com/content/article/pii/B9780121631017500013"
+                    },
+                    {
+                        "@_fa": "true",
+                        "@ref": "scidir",
+                        "@href": "https://cdc332-www.sciencedirect.com/science/article/pii/B9780121631017500013?dgcid=api_sd_search-api-endpoint"
+                    }
+                ],
+                "dc:identifier": "DOI:10.1016/B978-0-12-163101-7.50001-3",
+                "prism:url": "https://api.elsevier.com/content/article/pii/B9780121631017500013",
+                "dc:title": "QUANTUM ELECTRONICS – PRINCIPLES AND APPLICATIONS",
+                "prism:publicationName": "Heterostructure Lasers",
+                "prism:coverDate": "1978-12-31",
+                "prism:startingPage": "ii",
+                "prism:doi": "10.1016/B978-0-12-163101-7.50001-3",
+                "openaccess": false,
+                "pii": "B9780121631017500013",
+                "authors": null
+            },
+            {
+                "@_fa": "true",
+                "load-date": "2007-09-02T00:00:00Z",
+                "link": [
+                    {
+                        "@_fa": "true",
+                        "@ref": "self",
+                        "@href": "https://api.elsevier.com/content/article/pii/B9780123976307500044"
+                    },
+                    {
+                        "@_fa": "true",
+                        "@ref": "scidir",
+                        "@href": "https://cdc332-www.sciencedirect.com/science/article/pii/B9780123976307500044?dgcid=api_sd_search-api-endpoint"
+                    }
+                ],
+                "dc:identifier": "DOI:10.1016/B978-012397630-7/50004-4",
+                "prism:url": "https://api.elsevier.com/content/article/pii/B9780123976307500044",
+                "dc:title": "Chapter 4: Quantum Wire and Quantum Dot Lasers",
+                "dc:creator": "Eli Kapon",
+                "prism:publicationName": "Semiconductor Lasers I",
+                "prism:coverDate": "1999-12-31",
+                "prism:startingPage": "291",
+                "prism:endingPage": "360",
+                "prism:doi": "10.1016/B978-012397630-7/50004-4",
+                "openaccess": false,
+                "pii": "B9780123976307500044",
+                "authors": {
+                    "author": "Eli Kapon"
+                }
+            }
+        ]
+    }
+}
