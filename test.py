@@ -37,10 +37,12 @@ def search():
    if request.method == 'GET':
       try:
         searchVal = request.form['search']
-        models.searchPubs(searchVal)
+        rows = models.searchPubs(searchVal)
+        return render_template("results.html", rows = rows)
       except:
          #redirect to home?
-         render_template("index.html")
+         return render_template("index.html")  
+        
 
 if __name__ == '__main__':
     app.run()
