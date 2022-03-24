@@ -17,6 +17,7 @@ class Researchers(db.Model):
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
 
+
 @app.route("/")
 def home():
     return "Hello, Flask!"
@@ -47,3 +48,14 @@ def index():
     return render_template(
         "index.html"
     )
+
+@app.route('/search', methods = ['GET'])
+def addrec():
+   if request.method == 'POST':
+      try:
+        searchVal = request.form['search']
+        publications = models.search(searchval)
+      except:
+         con.rollback
+         #redirect to home?
+         render_template("index.html")
