@@ -36,13 +36,6 @@ def testTemp():
         "index.html"
     )
 
-if __name__ == '__main__':
-    app.run()
-    
-    
-
-
-
 @app.route("/index")
 def index():
     return render_template(
@@ -59,3 +52,6 @@ def addrec():
          con.rollback
          #redirect to home?
          render_template("index.html")
+
+if __name__ == '__main__':
+    app.run()
