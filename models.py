@@ -1,4 +1,5 @@
 # app.py
+from flask import render_template
 
 import sqlite3
 connection = sqlite3.connect('Users.db')
@@ -9,7 +10,7 @@ cursor.execute("CREATE TABLE [IF NOT EXISTS] publications (publication_id INTEGE
 connection.commit()
 
 
-def search(search):
+def searchPubs(search):
    con = sqlite3.connect("database.db")
    con.row_factory = sqlite3.Row
    cur = con.cursor()

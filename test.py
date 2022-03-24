@@ -1,7 +1,9 @@
 from flask import Flask
 from flask import render_template
+from flask import request
 import re
 import datetime
+import models
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
@@ -42,14 +44,13 @@ def index():
         "index.html"
     )
 
-@app.route('/search', methods = ['GET'])
-def addrec():
-   if request.method == 'POST':
+@app.route('/search', methods = ['POST', 'GET'])
+def search():
+   if request.method == 'GET':
       try:
         searchVal = request.form['search']
-        publications = models.search(searchval)
+        models.searchPubs(searchVal)
       except:
-         con.rollback
          #redirect to home?
          render_template("index.html")
 
