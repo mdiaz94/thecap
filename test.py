@@ -35,12 +35,12 @@ def index():
 
 @app.route('/search', methods = ['POST', 'GET'])
 def search():
-   if request.method == 'GET':
+   if request.method == 'POST':
       try:
         #cant figure out how to get searchvalue from form passed into this searchVal variable so i hard coded it to tzit no matter .
         #what was inputted to the search box There are test records in publications and 2 of them have the word tzit somewhere in the title
         #searchVal = request.form['search']
-        searchVal = 'tzit'
+        searchVal = request.form['search']
         con = sqlite3.connect("Users.db")
         con.row_factory = sqlite3.Row
         cur = con.cursor()
