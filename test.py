@@ -1,17 +1,19 @@
-from flask import Flask
+from flask import Flask,redirect
 from flask import render_template
 from flask import request
 import re
 import datetime
 import sqlite3
 import models
+import json
+import requests
 from datetime import datetime
 
 app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "Hello, Flask!"
+    return redirect("/index", code=302)
 
 @app.route("/hello/")
 @app.route("/hello/<name>")
@@ -27,11 +29,26 @@ def testTemp():
         "index.html"
     )
 
-@app.route("/index")
+@app.route("/index", methods= ['POST', 'GET'])
 def index():
+    if request.method == "POST":
+        search = request.form['search']
+        search = search.replace("", "+")
+        resultBuilder = ""
+        r=requests.get("https://api.elsevier.com/content/search/sciencedirect", params={"query":search,"count":"50"}, headers={"Accept":"application/json","X-ELS-APIKey":"64417dd6eed2d2f2d3aa7ca64942f679"})
+        data = json.loads(r.content)
+        datatwo = data['search-results']['entry']
+
+        i = 0
+        for data in datatwo:
+            resultBuilder = resultBuilder + '<p><a href="https://doi.org/' + datatwo[i]['prism:doi'] + '">' + datatwo[i]['dc:title'] + '</a></p>'
+            i = i+1
+
+        return render_template("results.html", search=request.form['search'], results=resultBuilder)
     return render_template(
         "index.html"
     )
+
 
 @app.route('/search', methods = ['POST', 'GET'])
 def search():
