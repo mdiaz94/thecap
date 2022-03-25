@@ -3,6 +3,7 @@ from flask import render_template
 from flask import request
 import re
 import datetime
+import sqlite3
 import models
 from datetime import datetime
 
@@ -36,12 +37,22 @@ def index():
 def search():
    if request.method == 'GET':
       try:
-        searchVal = request.form['search']
-        rows = models.searchPubs(searchVal)
+        #cant figure out how to get searchvalue from form passed into this searchVal variable so i hard coded it to tzit no matter .
+        #what was inputted to the search box There are test records in publications and 2 of them have the word tzit somewhere in the title
+        #searchVal = request.form['search']
+        searchVal = 'tzit'
+        con = sqlite3.connect("Users.db")
+        con.row_factory = sqlite3.Row
+        cur = con.cursor()
+        cur.execute("SELECT * FROM publications WHERE title LIKE ?;", ("%"+searchVal+"%",))
+        rows = cur.fetchall(); 
         return render_template("results.html", rows = rows)
       except:
          #redirect to home?
-         return render_template("index.html")  
+         print("there was an oopsy")
+         return render_template("index.html")
+      
+
         
 
 if __name__ == '__main__':
