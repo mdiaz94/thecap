@@ -35,8 +35,9 @@ def index():
         search = request.form['search']
         search = search.replace("", "+")
         resultBuilder = ""
-        r=requests.get("https://api.elsevier.com/content/search/sciencedirect", params={"query":search,"count":"50"}, headers={"Accept":"application/json","X-ELS-APIKey":"64417dd6eed2d2f2d3aa7ca64942f679"})
+        r=requests.get("https://api.elsevier.com/content/search/sciencedirect", params={"query":search,"count":"50"}, headers={"Accept":"application/json","X-ELS-APIKey":"682084898b02a949777e0b81f9943e3d"})
         data = json.loads(r.content)
+        print(data)
         datatwo = data['search-results']['entry']
 
         i = 0
