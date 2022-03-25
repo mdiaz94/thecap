@@ -41,7 +41,8 @@ def index():
 
         i = 0
         for data in datatwo:
-            resultBuilder = resultBuilder + '<p><a href="https://doi.org/' + datatwo[i]['prism:doi'] + '">' + datatwo[i]['dc:title'] + '</a></p>'
+            resultBuilder = resultBuilder + '<div class="card" style="width: 70%;"><div class="card-body"><h5 class="card-title"><a href="https://doi.org/' + datatwo[i]['prism:doi'] + '">' + datatwo[i]['dc:title'] + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + datatwo[i]['prism:publicationName'] + '</h6></div></div>'
+            #resultBuilder = resultBuilder + '<p><a href="https://doi.org/' + datatwo[i]['prism:doi'] + '">' + datatwo[i]['dc:title'] + '</a></p>'
             i = i+1
 
         return render_template("results.html", search=request.form['search'], results=resultBuilder)
