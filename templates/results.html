@@ -21,6 +21,7 @@
     crossorigin="anonymous"></script>
 
   <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+  <script src="{{ url_for('static', filename='pagination.js') }}"></script>
 
   <title>Knowledge Scrape!</title>
 </head>
@@ -97,9 +98,49 @@
 
     <!-- Content here -->
 
-    <p>Search results for: {{ search }}</p>
+    <div class="results-list">
+    <br>
+      <form role="form" id="form-buscar" action = "" method = "POST">
+        <div class="form-group">
+          <div class="input-group">
+            <input id="search" class="form-control" type="text" name="search" value="{{ search }}" required />
+            <span class="input-group-btn">
+              <button class="btn btn-success" style="background-color: rgb(0, 154, 82);" type="submit">
+                <i class="glyphicon glyphicon-search" aria-hidden="true"></i> Search
+              </button>
+            </span>
+          </div>
+        </div>
+      </form>
 
+    <br>
+    <p id="currentPageText"></p>
+
+    
     {{ results|safe}}
+    
+    <br>
+
+    <nav aria-label="results-pagination">
+      <ul class="pagination">
+        <li class="page-item">
+          <a class="page-link" href="javascript:;" aria-label="Previous" onClick="previousPage()">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item"><a class="page-link" href="javascript:;" onclick="showPage('page1', 1)">1</a></li>
+        <li class="page-item"><a class="page-link" href="javascript:;" onclick="showPage('page2', 2)">2</a></li>
+        <li class="page-item"><a class="page-link" href="javascript:;" onclick="showPage('page3', 3)">3</a></li>
+        <li class="page-item"><a class="page-link" href="javascript:;" onclick="showPage('page4', 4)">4</a></li>
+        <li class="page-item"><a class="page-link" href="javascript:;" onclick="showPage('page5', 5)">5</a></li>
+        <li class="page-item">
+          <a class="page-link" href="javascript:;" aria-label="Next" onClick="nextPage()">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
 
 
 
@@ -109,7 +150,7 @@
 
 
 
-<footer class="text-center text-white fixed-bottom">
+<footer class="text-center text-white">
 
   <div class="text-center p-3" style="background-color: rgb(0, 154, 82);">
     © 2022 Knowledge Scrape |

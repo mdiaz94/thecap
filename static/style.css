@@ -4,3 +4,9 @@
 .btn-margin-right {
     margin-right: 5%;
 }
+
+.results-list {
+    margin-left: 75px;
+	margin-right: 75px;
+    width: 80%;
+}
