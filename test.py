@@ -132,7 +132,7 @@ def Signup():
             session['username'] = username
             Username = session['username']
             session['logged_in'] = True
-            return redirect(url_for('index'))
+            return redirect(url_for('login'))
         return render_template("Signup.html")
 
 app.secret_key = "xyz"
