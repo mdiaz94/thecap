@@ -100,7 +100,7 @@
 
     <div class="results-list">
     <br>
-      <form role="form" id="form-buscar" action = "" method = "POST">
+      <form role="form" id="form-buscar" action = "/index" method = "POST">
         <div class="form-group">
           <div class="input-group">
             <input id="search" class="form-control" type="text" name="search" value="{{ search }}" required />
@@ -112,6 +112,17 @@
           </div>
         </div>
       </form>
+
+
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Filters
+        </button>
+        <form class="dropdown-menu" role="form" id="form-buscar" action = "/filter" method = "POST" aria-labelledby="dropdownMenuButton">
+          <label class="dropdown-item"><input type="checkbox" name="Date" value="one">Date Published</label>
+          <button class="btn btn-success" style="background-color: rgb(0, 154, 82);" type="submit">Apply</button>
+        </form>
+      </div>
 
     <br>
     <p id="currentPageText"></p>

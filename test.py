@@ -1,3 +1,5 @@
+from turtle import right
+from typing import Any
 from flask import Flask,redirect, session
 from flask import render_template
 from flask import request
@@ -10,6 +12,8 @@ import requests
 from datetime import datetime
 
 app = Flask(__name__)
+datatwo = Any
+search = Any
 
 @app.route("/")
 def home():
@@ -32,19 +36,21 @@ def testTemp():
 @app.route("/index", methods= ['POST', 'GET'])
 def index():
     if request.method == "POST":
+        global search
         search = request.form['search']
         search = search.replace("", "+")
         resultBuilder = ""
         r=requests.get("https://api.elsevier.com/content/search/sciencedirect", params={"query":search,"count":"50"}, headers={"Accept":"application/json","X-ELS-APIKey":"682084898b02a949777e0b81f9943e3d"})
         data = json.loads(r.content)#all the data in a giant variable
         #print(data)
+        global datatwo
         datatwo = data['search-results']['entry']#defines the search results so we can cut it up
-
         i = 0
         pageCounter = 1
+        
         for data in datatwo:
             resultBuilder = (resultBuilder + '<div class="card' + " page" + str(pageCounter) + '" style="width: 70%;"><div class="card-body"><h5 class="card-title"><a href="https://doi.org/' + 
-            datatwo[i]['prism:doi'] + '">' + datatwo[i]['dc:title'] + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + datatwo[i]['prism:publicationName'] + '</h6> </div><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</button></div>')
+            datatwo[i]['prism:doi'] + '">' + datatwo[i]['dc:title'] + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + datatwo[i]['prism:publicationName'] + '</h6><h6 class="card-subtitle mb-2 text-muted"><right>Date Published: ' + datatwo[i]['prism:coverDate'] + '</right></h6> </div><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</button></div>')
             #resultBuilder = resultBuilder + '<p><a href="https://doi.org/' + datatwo[i]['prism:doi'] + '">' + datatwo[i]['dc:title'] + '</a></p>'
             i = i+1
             if (i % 10 == 0):
@@ -55,9 +61,34 @@ def index():
         "index.html"
     )
 
+@app.route("/filter", methods= ['POST', 'GET'])
+def filter():
+    if request.method == "POST":
+        global datatwo
+        filteredData = datatwo
+        if request.form['Date'] == "one":
+            def sortFunc(e):
+                return e['prism:coverDate']
+            filteredData.sort(key=sortFunc, reverse = True)
+        i = 0
+        pageCounter = 1
+        resultBuilder = ""
+        for data in filteredData:
+            resultBuilder = (resultBuilder + '<div class="card' + " page" + str(pageCounter) + '" style="width: 70%;"><div class="card-body"><h5 class="card-title"><a href="https://doi.org/' + 
+            filteredData[i]['prism:doi'] + '">' + filteredData[i]['dc:title'] + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + filteredData[i]['prism:publicationName'] + '</h6><h6 class="card-subtitle mb-2 text-muted"><right>Date Published: ' + filteredData[i]['prism:coverDate'] + '</right></h6> </div><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</button></div>')
+            #resultBuilder = resultBuilder + '<p><a href="https://doi.org/' + datatwo[i]['prism:doi'] + '">' + datatwo[i]['dc:title'] + '</a></p>'
+            i = i+1
+            if (i % 10 == 0):
+                pageCounter = pageCounter + 1
+
+        return render_template("results.html", search=search, results=resultBuilder)
+    return render_template(
+        "index.html"
+    )
 
 @app.route('/search', methods = ['POST', 'GET'])
-def search():
+def searchFuture():
+    #not using this code rn
    if request.method == 'POST':
       try:
         #cant figure out how to get searchvalue from form passed into this searchVal variable so i hard coded it to tzit no matter .
