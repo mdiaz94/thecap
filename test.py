@@ -1,4 +1,4 @@
-from flask import Flask,redirect
+from flask import Flask,redirect, session
 from flask import render_template
 from flask import request
 import re
@@ -75,7 +75,44 @@ def search():
          return render_template("index.html")
       
 
+'''start of login/signup'''
+@app.route("/login")
+def login():
+    return render_template(
+        "Login.html"
+    )
+
+@app.route("/signup")
+def signup():
+    return render_template(
+        "Signup.html"
+    )
+
+@app.route('/Signdup', methods=['GET','POST'])
+def Signup():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        password2 = request.form['password2']
+        print("It ran (%s)",username);
+        if(password==password2):
+             user = "true"
+        return render_template("index.html")
+
+app.secret_key = "xyz"
+
+@app.route('/Signin', methods=['GET','POST'])
+def Signin():
+    if request.method == 'POST':
+        username = request.form['Username']
+        session['Username'] = username
+        Username = session['Username']
+        print("It ran (%s)",username);
+        return render_template("index.html")
+
+'''end of Login/Signup'''
         
+
 
 if __name__ == '__main__':
     app.run()
