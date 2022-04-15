@@ -1,0 +1,30 @@
+.btn-margin-left {
+    margin-left: 5%;
+}
+.btn-margin-right {
+    margin-right: 5%;
+}
+
+.results-list {
+    margin-left: 75px;
+	margin-right: 75px;
+    width: 80%;
+}
+
+.currentPage {
+    color:red; 
+    border:1px solid red;
+  }
+
+  .triangle-right {
+	width: 5px;
+	height: 5px;
+	border-top: 25px solid transparent;
+	border-left: 50px solid rgb(253, 20, 20);
+	border-bottom: 25px solid transparent;
+}
+  .square {
+    height: 50px;
+    width: 50px;
+    background-color: #555;
+  }
