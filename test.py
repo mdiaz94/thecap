@@ -36,14 +36,15 @@ def index():
         search = search.replace("", "+")
         resultBuilder = ""
         r=requests.get("https://api.elsevier.com/content/search/sciencedirect", params={"query":search,"count":"50"}, headers={"Accept":"application/json","X-ELS-APIKey":"682084898b02a949777e0b81f9943e3d"})
-        data = json.loads(r.content)
-        print(data)
-        datatwo = data['search-results']['entry']
+        data = json.loads(r.content)#all the data in a giant variable
+        #print(data)
+        datatwo = data['search-results']['entry']#defines the search results so we can cut it up
 
         i = 0
         pageCounter = 1
         for data in datatwo:
-            resultBuilder = resultBuilder + '<div class="card' + " page" + str(pageCounter) + '" style="width: 70%;"><div class="card-body"><h5 class="card-title"><a href="https://doi.org/' + datatwo[i]['prism:doi'] + '">' + datatwo[i]['dc:title'] + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + datatwo[i]['prism:publicationName'] + '</h6></div></div>'
+            resultBuilder = (resultBuilder + '<div class="card' + " page" + str(pageCounter) + '" style="width: 70%;"><div class="card-body"><h5 class="card-title"><a href="https://doi.org/' + 
+            datatwo[i]['prism:doi'] + '">' + datatwo[i]['dc:title'] + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + datatwo[i]['prism:publicationName'] + '</h6> </div><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</button></div>')
             #resultBuilder = resultBuilder + '<p><a href="https://doi.org/' + datatwo[i]['prism:doi'] + '">' + datatwo[i]['dc:title'] + '</a></p>'
             i = i+1
             if (i % 10 == 0):
