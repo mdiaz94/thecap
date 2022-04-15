@@ -128,7 +128,11 @@ def Signup():
         password2 = request.form['password2']
         print("It ran (%s)",username);
         if(password==password2):
-             user = "true"
+            username = request.form['username']
+            session['username'] = username
+            Username = session['username']
+            session['logged_in'] = True
+            return redirect(url_for('index'))
         return render_template("Signup.html")
 
 app.secret_key = "xyz"
@@ -140,14 +144,14 @@ def Signin():
         session['Username'] = username
         Username = session['Username']
         session['logged_in'] = True
-        return render_template("Login.html")
+        return redirect(url_for('index'))
 
 '''end of Login/Signup'''
         
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
-    return render_template("index.html")
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run()
