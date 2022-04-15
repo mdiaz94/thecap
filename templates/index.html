@@ -48,7 +48,7 @@
       <!-- Begin right hand side of navbar - user accounts and stuff will go here -->
 
 
-      {% if user%}
+      {% if session['logged_in'] == True %}
       <!-- NOTE: Remove this if statment and the else down below to see the menu bar. this is setup now for the user later -->
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-1 ">

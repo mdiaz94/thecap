@@ -1,6 +1,6 @@
 from turtle import right
 from typing import Any
-from flask import Flask,redirect, session
+from flask import Flask,redirect, session, url_for
 from flask import render_template
 from flask import request
 import re
@@ -139,12 +139,15 @@ def Signin():
         username = request.form['Username']
         session['Username'] = username
         Username = session['Username']
-        print("It ran (%s)",username);
+        session['logged_in'] = True
         return render_template("Login.html")
 
 '''end of Login/Signup'''
         
-
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    return render_template("index.html")
 
 if __name__ == '__main__':
     app.run()
