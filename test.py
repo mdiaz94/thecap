@@ -89,7 +89,7 @@ def signup():
         "Signup.html"
     )
 
-@app.route('/Signdup', methods=['GET','POST'])
+@app.route('/signup', methods=['GET','POST'])
 def Signup():
     if request.method == 'POST':
         username = request.form['username']
@@ -98,18 +98,18 @@ def Signup():
         print("It ran (%s)",username);
         if(password==password2):
              user = "true"
-        return render_template("index.html")
+        return render_template("Signup.html")
 
 app.secret_key = "xyz"
 
-@app.route('/Signin', methods=['GET','POST'])
+@app.route('/login', methods=['GET','POST'])
 def Signin():
     if request.method == 'POST':
         username = request.form['Username']
         session['Username'] = username
         Username = session['Username']
         print("It ran (%s)",username);
-        return render_template("index.html")
+        return render_template("Login.html")
 
 '''end of Login/Signup'''
         
