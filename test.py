@@ -155,6 +155,14 @@ def logout():
     return redirect(url_for('index'))
 
 
+'''start of Topics page'''
+@app.route('/Topics')
+def Topics():
+    return render_template(
+        "Topics.html"
+    )
+
+'''end of Topics page'''
 @app.route("/researchers")
 def research():
     return render_template(
