@@ -132,7 +132,7 @@ def Signup():
         if(password==password2):
             conn = sqlite3.connect("Users.db")
             c = conn.cursor()
-            c.execute("INSERT INTO users VALUES('"+username+"', '"+password+"')")
+            c.execute("INSERT INTO users VALUES('1','"+username+"', '"+password+"')")
             conn.commit()
             conn.close()
             return redirect(url_for('login'))
