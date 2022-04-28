@@ -153,5 +153,13 @@ def logout():
     session.pop('logged_in', None)
     return redirect(url_for('index'))
 
+
+@app.route("/researchers")
+def research():
+    return render_template(
+        "research.html"
+    )
+
+
 if __name__ == '__main__':
     app.run()
