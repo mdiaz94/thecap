@@ -16,6 +16,7 @@ datatwo = Any
 search = Any
 directAPI = "682084898b02a949777e0b81f9943e3d"
 
+
 @app.route("/")
 def home():
     return redirect("/index", code=302)
@@ -129,10 +130,11 @@ def Signup():
         password2 = request.form['password2']
         print("It ran (%s)",username);
         if(password==password2):
-            username = request.form['username']
-            session['username'] = username
-            Username = session['username']
-            session['logged_in'] = True
+            conn = sqlite3.connect("Users.db")
+            c = conn.cursor()
+            c.execute("INSERT INTO users VALUES('"+username+"', '"+password+"')")
+            conn.commit()
+            conn.close()
             return redirect(url_for('login'))
         return render_template("Signup.html")
 
