@@ -153,5 +153,15 @@ def logout():
     session.pop('logged_in', None)
     return redirect(url_for('index'))
 
+
+'''start of Topics page'''
+@app.route('/Topics')
+def Topics():
+    return render_template(
+        "Topics.html"
+    )
+
+'''end of Topics page'''
+
 if __name__ == '__main__':
     app.run()
