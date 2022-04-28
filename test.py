@@ -162,6 +162,12 @@ def Topics():
     )
 
 '''end of Topics page'''
+@app.route("/researchers")
+def research():
+    return render_template(
+        "research.html"
+    )
+
 
 if __name__ == '__main__':
     app.run()
