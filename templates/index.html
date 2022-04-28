@@ -20,8 +20,8 @@
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
     crossorigin="anonymous"></script>
 
-  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/style.css') }}">
- 
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
+
   <title>Knowledge Scrape!</title>
 </head>
 
@@ -92,38 +92,84 @@
 
 
 
-  
 
 
-    <!-- Content here -->
 
-    <div class="container d-flex justify-content-center" style="margin-top: 8%;">
-      <div class="col-md-6 col-md-offset-3">
-        <div class="row">
-          <div id="logo" class="text-center">
-            <h1>Search</h1>
-          </div>
-          <form role="form" id="form-buscar" action = "/index" method = "POST">
-            <div class="form-group">
-              <div class="input-group">
-                <input id="search" class="form-control" type="text" name="search" placeholder="Search..." required />
-                <span class="input-group-btn">
-                  <button class="btn btn-success" style="background-color: rgb(0, 154, 82);" type="submit">
-                    <i class="glyphicon glyphicon-search" aria-hidden="true"></i> Search
-                  </button>
-                </span>
-              </div>
-            </div>
-          </form>
+  <!-- Content here -->
+
+  <!--Article Search Button here-->
+  <div class="container d-flex justify-content-center" style="margin-top: 8%;" id="articleSearch">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="row">
+        <div id="logo" class="text-center">
+          <h1>Search</h1>
         </div>
+        <form role="form" id="form-buscar" action="/index" method="POST">
+          <div class="form-group">
+            <div class="input-group">
+              <input id="search" class="form-control" type="text" name="search" placeholder="Search articles..." required />
+              <span class="input-group-btn">
+                <button class="btn btn-success" style="background-color: rgb(0, 154, 82);" type="submit">
+                  <i class="glyphicon glyphicon-search" aria-hidden="true"></i> Search
+                </button>
+              </span>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
+  </div>
 
+  <!--Author search here-->
+  <div class="container d-flex justify-content-center" style="margin-top: 8%;" id="authorSearch">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="row">
+        <div id="logo" class="text-center">
+          <h1>Search</h1>
+        </div>
+        <form role="form" id="form-buscar" action="/index" method="POST">
+          <div class="form-group">
+            <div class="input-group">
+              <input id="search" class="form-control" type="text" name="search" placeholder="Search authors..." required />
+              <span class="input-group-btn">
+                <button class="btn btn-success" style="background-color: rgb(0, 154, 82);" type="submit">
+                  <i class="glyphicon glyphicon-search" aria-hidden="true"></i> Search
+                </button>
+              </span>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!--End Search functions-->
+
+
+
+  <!--Radio buttons-->
+  <div class="container d-flex justify-content-center">
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked>
+      <label class="form-check-label" for="inlineRadio1">Articles</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+      <label class="form-check-label" for="inlineRadio2">Researchers</label>
+    </div>
+  </div>
+  <!--End Radio buttons-->
+
+
+  <!--Content Here-->
 
 
 
 
 </body>
+
+
+
 
 
 
