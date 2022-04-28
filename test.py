@@ -155,11 +155,30 @@ def logout():
 
 
 '''start of Topics page'''
-@app.route('/Topics')
+@app.route('/Topics' , methods=['GET','POST'])
 def Topics():
+    searchTwo = "a"
+    resultBuilder = ""
+    r=requests.get("https://api.elsevier.com/content/search/sciencedirect", params={"query": searchTwo,"count":"3"}, headers={"Accept":"application/json","X-ELS-APIKey":"682084898b02a949777e0b81f9943e3d"})
+    data = json.loads(r.content)#all the data in a giant variable
+    #print(data)
+    global datatwo
+    datatwo = data['search-results']['entry']#defines the search results so we can cut it up
+    i = 0
+    pageCounter = 1
+   
+    for data in datatwo:
+        datatwo[i]['prism:doi'] + '">' + datatwo[i]['dc:title'] + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + datatwo[i]['prism:publicationName'] + '</h6><h6 class="card-subtitle mb-2 text-muted"><right>Date Published: ' + datatwo[i]['prism:coverDate'] + '</right></h6> </div><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</button></div>'
+        #print(datatwo[i]['dc:title'])
+        #print(datatwo[i]['authors'])
+        #print(datatwo[i]['prism:publicationName'])
+        #print(datatwo[i]['prism:doi'])
+        i = i+1
     return render_template(
         "Topics.html"
     )
+
+    
 
 '''end of Topics page'''
 @app.route("/researchers")
