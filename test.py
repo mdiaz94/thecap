@@ -128,11 +128,14 @@ def Signup():
         username = request.form['username']
         password = request.form['password']
         password2 = request.form['password2']
-        print("It ran (%s)",username);
         if(password==password2):
             conn = sqlite3.connect("Users.db")
             c = conn.cursor()
-            c.execute("INSERT INTO users VALUES('1','"+username+"', '"+password+"')")
+            c.execute("SELECT Count(*) FROM users;")
+            num = c.fetchone()
+            hi = int(num[0])
+            hi+=1
+            c.execute("INSERT INTO users VALUES(%d,'%s','%s')"%(hi,username,password))
             conn.commit()
             conn.close()
             return redirect(url_for('login'))
