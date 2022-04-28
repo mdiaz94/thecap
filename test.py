@@ -14,6 +14,7 @@ from datetime import datetime
 app = Flask(__name__)
 datatwo = Any
 search = Any
+directAPI = "682084898b02a949777e0b81f9943e3d"
 
 @app.route("/")
 def home():
@@ -40,7 +41,7 @@ def index():
         search = request.form['search']
         search = search.replace("", "+")
         resultBuilder = ""
-        r=requests.get("https://api.elsevier.com/content/search/sciencedirect", params={"query":search,"count":"50"}, headers={"Accept":"application/json","X-ELS-APIKey":"682084898b02a949777e0b81f9943e3d"})
+        r=requests.get("https://api.elsevier.com/content/search/sciencedirect", params={"query":search,"count":"50"}, headers={"Accept":"application/json","X-ELS-APIKey":directAPI})
         data = json.loads(r.content)#all the data in a giant variable
         #print(data)
         global datatwo
