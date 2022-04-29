@@ -200,7 +200,12 @@ def Topics():
         "Topics.html"
     )
 
-    
+    '''end of bookmark page'''
+@app.route("/bookmarks")
+def bookmark():
+    return render_template(
+        "bookmarks.html"
+    )
 
 '''end of Topics page'''
 @app.route("/researchers")
