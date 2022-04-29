@@ -151,13 +151,21 @@ app.secret_key = "xyz"
 
 @app.route('/login', methods=['GET','POST'])
 def Signin():
-    if request.method == 'POST':
+    if request.method == 'POST':       
         username = request.form['Username']
-        session['Username'] = username
-        Username = session['Username']
-        session['logged_in'] = True
-        return redirect(url_for('index'))
-
+        pasword = request.form['password']
+        conn = sqlite3.connect("Users.db")
+        c = conn.cursor()
+        c.execute("SELECT name FROM users WHERE name = '%s' AND password = '%s';"%(username,pasword))
+        num = c.fetchone()
+        tem = num[0]
+        print(tem)
+        if(tem == username):
+            session['Username'] = username
+            Username = session['Username']
+            session['logged_in'] = True
+            return redirect(url_for('index'))
+    return redirect(url_for('login'))
 '''end of Login/Signup'''
         
 @app.route('/logout')
