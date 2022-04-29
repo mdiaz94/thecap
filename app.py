@@ -41,7 +41,8 @@ def index():
     if request.method == "POST":
         global search
         search = request.form['search']
-        search = search.replace(" ", "+")
+        search = search.replace(" ", " AND ")
+        print(search)
         resultBuilder = ""
         i = 0
         pageCounter = 1
