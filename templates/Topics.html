@@ -21,7 +21,7 @@
     crossorigin="anonymous"></script>
 
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/style.css') }}">
-  <script src="{{ url_for('static', filename='pagination.js') }}"></script>
+  
 
   <title>Knowledge Scrape!</title>
 </head>
@@ -91,7 +91,7 @@
   <!-- END NAVBAR -->
 
 <!--Start Display Results-->
-  {{ results|safe}}
+  <div>{{ results|safe}}</div>
 <!--End Display Results-->
 </body>
 
