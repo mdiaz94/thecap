@@ -1,3 +1,4 @@
+import math
 from turtle import right
 from types import NoneType
 from typing import Any
@@ -12,6 +13,8 @@ import json
 import requests
 import arxiv
 from datetime import datetime
+import string
+import random
 
 app = Flask(__name__)
 datatwo = Any
@@ -179,7 +182,8 @@ def logout():
 '''start of Topics page'''
 @app.route('/Topics' , methods=['GET','POST'])
 def Topics():
-        search = 'a'
+        string.ascii_letters
+        search = random.choice(string.ascii_letters)
         print(search)
         resultBuilder = ""
         search = arxiv.Search (
