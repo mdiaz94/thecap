@@ -169,15 +169,18 @@ def Topics():
     pageCounter = 1
    
     for data in datatwo:
-        datatwo[i]['prism:doi'] + '">' + datatwo[i]['dc:title'] + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + datatwo[i]['prism:publicationName'] + '</h6><h6 class="card-subtitle mb-2 text-muted"><right>Date Published: ' + datatwo[i]['prism:coverDate'] + '</right></h6> </div><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</button></div>'
-        #print(datatwo[i]['dc:title'])
-        #print(datatwo[i]['authors'])
-        #print(datatwo[i]['prism:publicationName'])
-        #print(datatwo[i]['prism:doi'])
+        resultBuilder = (resultBuilder + '<div class="card' + " page" + str(pageCounter) + '" style="width: 70%;"><div class="card-body"><h5 class="card-title"><a href="https://doi.org/' + 
+        datatwo[i]['prism:doi'] + '">' + datatwo[i]['dc:title'] + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + datatwo[i]['prism:publicationName'] + '</h6><h6 class="card-subtitle mb-2 text-muted"><right>Date Published: ' + datatwo[i]['prism:coverDate'] + '</right></h6> </div><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</button></div>')
+        print(datatwo[i]['dc:title'])
+        print(datatwo[i]['authors'])
+        print(datatwo[i]['prism:publicationName'])
+        print(datatwo[i]['prism:doi'])
         i = i+1
-    return render_template(
-        "Topics.html"
-    )
+        
+    return render_template("Topics.html", search=searchTwo, results=resultBuilder)
+
+
+    
 
     
 
