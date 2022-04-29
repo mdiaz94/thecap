@@ -1,4 +1,5 @@
 from turtle import right
+from types import NoneType
 from typing import Any
 from flask import Flask,redirect, session, url_for
 from flask import render_template
@@ -58,7 +59,7 @@ def index():
                 publication = 'Unknown Journal'
             publishdate = result.published.strftime('%d %B, %y')
             resultBuilder = (resultBuilder + '<div class="card' + " page" + str(pageCounter) + '" style="width: 70%;"><div class="card-body"><h5 class="card-title"><a href="' + 
-            result.entry_id + '">' + result.title + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + publication + '</h6><h6 class="card-subtitle mb-2 text-muted"><right>Date Published: ' + publishdate + '</right></h6> </div><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</button></div>')
+            result.entry_id + '">' + result.title + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + publication + '</h6><h6 class="card-subtitle mb-2 text-muted"><right>Date Published: ' + publishdate + '</right></h6> </div><a href="/addbookmark?id=' + result.entry_id + '" type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</a></div>')
             #resultBuilder = resultBuilder + '<p><a href="https://doi.org/' + datatwo[i]['prism:doi'] + '">' + datatwo[i]['dc:title'] + '</a></p>'
             i = i+1
             if (i % 10 == 0):
@@ -151,13 +152,22 @@ app.secret_key = "xyz"
 
 @app.route('/login', methods=['GET','POST'])
 def Signin():
-    if request.method == 'POST':
+    if request.method == 'POST':       
         username = request.form['Username']
-        session['Username'] = username
-        Username = session['Username']
-        session['logged_in'] = True
-        return redirect(url_for('index'))
-
+        pasword = request.form['password']
+        conn = sqlite3.connect("Users.db")
+        c = conn.cursor()
+        c.execute("SELECT name FROM users WHERE name = '%s' AND password = '%s';"%(username,pasword))       
+        num = c.fetchone()
+        if(num is not None):
+            tem = num[0]
+            print(num[0])
+            if(tem == username):
+                session['Username'] = username
+                Username = session['Username']
+                session['logged_in'] = True
+                return redirect(url_for('index'))
+    return redirect(url_for('login'))
 '''end of Login/Signup'''
         
 @app.route('/logout')
@@ -188,7 +198,12 @@ def Topics():
             
 
 
-    
+    '''end of bookmark page'''
+@app.route("/bookmarks")
+def bookmark():
+    return render_template(
+        "bookmarks.html"
+    )
 
 '''end of Topics page'''
 @app.route("/researchers")
