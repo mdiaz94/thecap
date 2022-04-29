@@ -1,4 +1,5 @@
 from turtle import right
+from types import NoneType
 from typing import Any
 from flask import Flask,redirect, session, url_for
 from flask import render_template
@@ -156,15 +157,16 @@ def Signin():
         pasword = request.form['password']
         conn = sqlite3.connect("Users.db")
         c = conn.cursor()
-        c.execute("SELECT name FROM users WHERE name = '%s' AND password = '%s';"%(username,pasword))
+        c.execute("SELECT name FROM users WHERE name = '%s' AND password = '%s';"%(username,pasword))       
         num = c.fetchone()
-        tem = num[0]
-        print(tem)
-        if(tem == username):
-            session['Username'] = username
-            Username = session['Username']
-            session['logged_in'] = True
-            return redirect(url_for('index'))
+        if(num is not None):
+            tem = num[0]
+            print(num[0])
+            if(tem == username):
+                session['Username'] = username
+                Username = session['Username']
+                session['logged_in'] = True
+                return redirect(url_for('index'))
     return redirect(url_for('login'))
 '''end of Login/Signup'''
         
