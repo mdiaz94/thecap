@@ -16,6 +16,7 @@ datatwo = Any
 search = Any
 directAPI = "682084898b02a949777e0b81f9943e3d"
 
+
 @app.route("/")
 def home():
     return redirect("/index", code=302)
@@ -127,12 +128,16 @@ def Signup():
         username = request.form['username']
         password = request.form['password']
         password2 = request.form['password2']
-        print("It ran (%s)",username);
         if(password==password2):
-            username = request.form['username']
-            session['username'] = username
-            Username = session['username']
-            session['logged_in'] = True
+            conn = sqlite3.connect("Users.db")
+            c = conn.cursor()
+            c.execute("SELECT Count(*) FROM users;")
+            num = c.fetchone()
+            hi = int(num[0])
+            hi+=1
+            c.execute("INSERT INTO users VALUES(%d,'%s','%s')"%(hi,username,password))
+            conn.commit()
+            conn.close()
             return redirect(url_for('login'))
         return render_template("Signup.html")
 
@@ -140,13 +145,21 @@ app.secret_key = "xyz"
 
 @app.route('/login', methods=['GET','POST'])
 def Signin():
-    if request.method == 'POST':
+    if request.method == 'POST':       
         username = request.form['Username']
-        session['Username'] = username
-        Username = session['Username']
-        session['logged_in'] = True
-        return redirect(url_for('index'))
-
+        pasword = request.form['password']
+        conn = sqlite3.connect("Users.db")
+        c = conn.cursor()
+        c.execute("SELECT name FROM users WHERE name = '%s' AND password = '%s';"%(username,pasword))
+        num = c.fetchone()
+        tem = num[0]
+        print(tem)
+        if(tem == username):
+            session['Username'] = username
+            Username = session['Username']
+            session['logged_in'] = True
+            return redirect(url_for('index'))
+    return redirect(url_for('login'))
 '''end of Login/Signup'''
         
 @app.route('/logout')
@@ -175,6 +188,11 @@ def Topics():
         print(datatwo[i]['authors'])
         print(datatwo[i]['prism:publicationName'])
         print(datatwo[i]['prism:doi'])
+        datatwo[i]['prism:doi'] + '">' + datatwo[i]['dc:title'] + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + datatwo[i]['prism:publicationName'] + '</h6><h6 class="card-subtitle mb-2 text-muted"><right>Date Published: ' + datatwo[i]['prism:coverDate'] + '</right></h6> </div><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</button></div>' 
+        #print(datatwo[i]['dc:title'])
+        #print(datatwo[i]['authors'])
+        #print(datatwo[i]['prism:publicationName'])
+        #print(datatwo[i]['prism:doi'])
         i = i+1
         
     return render_template("Topics.html", search=searchTwo, results=resultBuilder)
