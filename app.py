@@ -1,16 +1,8 @@
-import math
-from turtle import right
-from types import NoneType
 from typing import Any
 from flask import Flask,redirect, session, url_for
 from flask import render_template
 from flask import request
-import re
-import datetime
 import sqlite3
-import models
-import json
-import requests
 import arxiv
 from datetime import datetime
 import string
