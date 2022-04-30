@@ -125,6 +125,7 @@
       </div>
 
     <br>
+    <p id="maxPageNumber" hidden>{{ maxPageNumber }}</p>
     <p id="currentPageText"></p>
 
     
@@ -139,11 +140,7 @@
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
-        <li class="page-item"><a class="page-link" href="javascript:;" onclick="showPage('page1', 1)">1</a></li>
-        <li class="page-item"><a class="page-link" href="javascript:;" onclick="showPage('page2', 2)">2</a></li>
-        <li class="page-item"><a class="page-link" href="javascript:;" onclick="showPage('page3', 3)">3</a></li>
-        <li class="page-item"><a class="page-link" href="javascript:;" onclick="showPage('page4', 4)">4</a></li>
-        <li class="page-item"><a class="page-link" href="javascript:;" onclick="showPage('page5', 5)">5</a></li>
+        {{ pages|safe}}
         <li class="page-item">
           <a class="page-link" href="javascript:;" aria-label="Next" onClick="nextPage()">
             <span aria-hidden="true">&raquo;</span>

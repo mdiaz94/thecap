@@ -2,6 +2,7 @@ var page=1
 var results
 var currentPage
 var currentPageText
+var maxPageNumber
 
 document.addEventListener('DOMContentLoaded', function(){ 
     results = document.getElementsByClassName('card');
@@ -14,14 +15,16 @@ document.addEventListener('DOMContentLoaded', function(){
     for (var i = 0; i < results1.length; i ++) {
         results1[i].style.display = 'block';
     }
+    maxPageNumber = parseInt(document.getElementById('maxPageNumber').innerHTML) - 1;
     updateCurrentPageText(page);
 }, false);
 
-function showPage(pageNumber, pageInt) {
+function showPage(pageInt) {
     for (var i = 0; i < results.length; i ++) {
         results[i].style.display = 'none';
     }
     page = pageInt
+    var pageNumber = "page" + page
     currentPage = document.getElementsByClassName(pageNumber);
     for (var i = 0; i < currentPage.length; i ++) {
         currentPage[i].style.display = 'block';
@@ -62,7 +65,7 @@ function nextPage() {
 }
 
 function updateCurrentPageText(pageInt){
-    currentPageText.innerHTML = "Page " + pageInt + " out of 5";
+    currentPageText.innerHTML = "Page " + pageInt + " out of " + maxPageNumber;
     window.focus();
     setTimeout(window.scrollTo({top: 0, behavior: 'smooth'}),1);
 }

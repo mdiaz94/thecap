@@ -16,7 +16,7 @@ directAPI = "682084898b02a949777e0b81f9943e3d"
 
 @app.route("/")
 def home():
-    return redirect("/index", code=302)
+    return redirect("index", code=302)
 
 @app.route("/hello/")
 @app.route("/hello/<name>")
@@ -40,11 +40,12 @@ def index():
         search = search.replace(" ", " AND ")
         print(search)
         resultBuilder = ""
+        pageBuilder = ''
         i = 0
         pageCounter = 1
         search = arxiv.Search (
                 query = search,
-                max_results = 50
+                max_results = 100
         )
         for result in search.results():
             try:
@@ -57,16 +58,17 @@ def index():
             for author in result.authors:
                 authorstring = authorstring + author.name + ", "
             authorstring = authorstring[:-2]
-            print(authorstring)
             resultBuilder = (resultBuilder + '<div class="card' + " page" + str(pageCounter) + '" style="width: 70%;"><div class="card-body"><h5 class="card-title"><a href="' + 
             result.entry_id + '">' + result.title + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + authorstring + '</h6><h6 class="card-subtitle mb-2 text-muted">' + publication + '</h6><h6 class="card-subtitle mb-2 text-muted"><right>Date Published: ' + publishdate + 
             '</right></h6> </div><a href="/addbookmark?id=' + result.entry_id + '" type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</a></div>')
             #resultBuilder = resultBuilder + '<p><a href="https://doi.org/' + datatwo[i]['prism:doi'] + '">' + datatwo[i]['dc:title'] + '</a></p>'
             i = i+1
             if (i % 10 == 0):
+                pageBuilder = pageBuilder + '<li class="page-item"><a class="page-link" href="javascript:;" onclick="showPage(' + str(pageCounter) + ')">' + str(pageCounter) + '</a></li>'
                 pageCounter = pageCounter + 1
+                
 
-        return render_template("results.html", search=request.form['search'], results=resultBuilder)
+        return render_template("results.html", search=request.form['search'], results=resultBuilder, pages=pageBuilder, maxPageNumber=pageCounter)
     return render_template(
         "index.html"
     )
