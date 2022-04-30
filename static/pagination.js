@@ -65,6 +65,13 @@ function nextPage() {
 }
 
 function updateCurrentPageText(pageInt){
+    if (maxPageNumber == 0){
+        pageButton = document.getElementsByClassName('page-link');
+        for (var i = 0; i < pageButton.length; i ++) {
+            pageButton[i].style.display = 'none';
+        }
+        return
+    }
     currentPageText.innerHTML = "Page " + pageInt + " out of " + maxPageNumber;
     window.focus();
     setTimeout(window.scrollTo({top: 0, behavior: 'smooth'}),1);

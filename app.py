@@ -67,7 +67,8 @@ def index():
                 pageBuilder = pageBuilder + '<li class="page-item"><a class="page-link" href="javascript:;" onclick="showPage(' + str(pageCounter) + ')">' + str(pageCounter) + '</a></li>'
                 pageCounter = pageCounter + 1
                 
-
+        if pageCounter == 1:
+            pageBuilder = ""
         return render_template("results.html", search=request.form['search'], results=resultBuilder, pages=pageBuilder, maxPageNumber=pageCounter)
     return render_template(
         "index.html"
