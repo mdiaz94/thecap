@@ -10,7 +10,7 @@ import random
 
 app = Flask(__name__)
 datatwo = Any
-search = Any
+searchResults = Any
 directAPI = "682084898b02a949777e0b81f9943e3d"
 
 
@@ -35,7 +35,7 @@ def testTemp():
 @app.route("/index", methods= ['POST', 'GET'])
 def index():
     if request.method == "POST":
-        global search
+        global searchResults
         search = request.form['search']
         search = search.replace(" ", " AND ")
         print(search)
@@ -43,11 +43,11 @@ def index():
         pageBuilder = ''
         i = 0
         pageCounter = 1
-        search = arxiv.Search (
+        searchResults = arxiv.Search (
                 query = search,
                 max_results = 100
         )
-        for result in search.results():
+        for result in searchResults.results():
             try:
                 result.journal_ref + "test string"
                 publication = result.journal_ref
@@ -77,24 +77,39 @@ def index():
 @app.route("/filter", methods= ['POST', 'GET'])
 def filter():
     if request.method == "POST":
-        global datatwo
-        filteredData = datatwo
+        global searchResults
         if request.form['Date'] == "one":
             def sortFunc(e):
-                return e['prism:coverDate']
-            filteredData.sort(key=sortFunc, reverse = True)
-        i = 0
-        pageCounter = 1
-        resultBuilder = ""
-        for data in filteredData:
-            resultBuilder = (resultBuilder + '<div class="card' + " page" + str(pageCounter) + '" style="width: 70%;"><div class="card-body"><h5 class="card-title"><a href="https://doi.org/' + 
-            filteredData[i]['prism:doi'] + '">' + filteredData[i]['dc:title'] + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + filteredData[i]['prism:publicationName'] + '</h6><h6 class="card-subtitle mb-2 text-muted"><right>Date Published: ' + filteredData[i]['prism:coverDate'] + '</right></h6> </div><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</button></div>')
+                return e.published
+            sorted_results = list(searchResults.results())
+            sorted_results.sort(key=sortFunc, reverse = True)
+            i = 0
+            pageCounter = 1
+            resultBuilder = ""
+            pageBuilder = ''
+        for result in sorted_results:
+            try:
+                result.journal_ref + "test string"
+                publication = result.journal_ref
+            except:
+                publication = 'arXiv preprint'
+            publishdate = result.published.strftime('%d %B, %y')
+            authorstring = ""
+            for author in result.authors:
+                authorstring = authorstring + author.name + ", "
+            authorstring = authorstring[:-2]
+            resultBuilder = (resultBuilder + '<div class="card' + " page" + str(pageCounter) + '" style="width: 70%;"><div class="card-body"><h5 class="card-title"><a href="' + 
+            result.entry_id + '">' + result.title + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + authorstring + '</h6><h6 class="card-subtitle mb-2 text-muted">' + publication + '</h6><h6 class="card-subtitle mb-2 text-muted"><right>Date Published: ' + publishdate + 
+            '</right></h6> </div><a href="/addbookmark?id=' + result.entry_id + '" type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</a></div>')
             #resultBuilder = resultBuilder + '<p><a href="https://doi.org/' + datatwo[i]['prism:doi'] + '">' + datatwo[i]['dc:title'] + '</a></p>'
             i = i+1
             if (i % 10 == 0):
+                pageBuilder = pageBuilder + '<li class="page-item"><a class="page-link" href="javascript:;" onclick="showPage(' + str(pageCounter) + ')">' + str(pageCounter) + '</a></li>'
                 pageCounter = pageCounter + 1
-
-        return render_template("results.html", search=search, results=resultBuilder)
+                
+        if pageCounter == 1:
+            pageBuilder = ""
+        return render_template("results.html", results=resultBuilder, pages=pageBuilder, maxPageNumber=pageCounter)
     return render_template(
         "index.html"
     )
