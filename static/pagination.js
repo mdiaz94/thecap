@@ -49,7 +49,7 @@ function previousPage() {
 }
 
 function nextPage() {
-    if (page == 5) {
+    if (page == maxPageNumber) {
         return
     }
     for (var i = 0; i < results.length; i ++) {
