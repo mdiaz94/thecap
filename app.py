@@ -87,15 +87,18 @@ def researcher_search():
         r = requests.get("https://pub.orcid.org/v3.0/expanded-search/", params={"q":search,"rows":"100"}, headers={"Accept":"application/json"})
         data = json.loads(r.content)
         for researcher in data['expanded-result']:
-            if (researcher['institution-name']):
+            #if statement is needed because not all researchers are active and some appraently don't have name in the orcid database
+            if (researcher['institution-name'] and researcher['given-names'] and researcher['family-names'] ):
                 fullName = researcher['given-names'] + " " + researcher['family-names']
-                queryBuilder = "researchers?name=" + fullName + "&institution-name=" + researcher['institution-name'][0]
+                queryBuilder = "researchers?name=" + fullName + "&institution-name=" + researcher['institution-name'][0] + "&orcid-id=" + researcher['orcid-id']
                 resultBuilder = (resultBuilder + '<div class="card' + " page" + str(pageCounter) + '" style="width: 70%;"><div class="card-body"><h5 class="card-title"><a href="' + 
-                queryBuilder + '">' + fullName + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + researcher['institution-name'][0] + '</h6></div></div>')
+                queryBuilder + '" target="_blank">' + fullName + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + researcher['institution-name'][0] + '</h6></div></div>')
                 i = i + 1
                 if (i % 10 == 0):
                     pageBuilder = pageBuilder + '<li class="page-item"><a class="page-link" href="javascript:;" onclick="showPage(' + str(pageCounter) + ')">' + str(pageCounter) + '</a></li>'
                     pageCounter = pageCounter + 1
+                if pageCounter == 1:
+                    pageBuilder = ""
         return render_template ("researcher-results.html", search=request.form['search'], results=resultBuilder, pages=pageBuilder, maxPageNumber=pageCounter)
     else:
         return render_template ("index.html")
@@ -256,8 +259,56 @@ def bookmark():
 '''end of Topics page'''
 @app.route("/researchers")
 def research():
+    args = request.args
+    args = args.to_dict()
+    researcherName = args.get('name')
+    researcherInstitution = args.get('institution-name')
+    orcid = args.get('orcid-id')
+    resultBuilder = ""
+    pageBuilder = ''
+    pageCounter = 1
+    i = 0
+    noArticles = ""
+    orcidURL = "https://pub.orcid.org/v3.0/" + orcid + "/works"
+    r=requests.get(orcidURL, params={}, headers={"Accept":"application/json"})
+    data = json.loads(r.content)
+    for research in data['group']:
+        articleTitle = research['work-summary'][0]['title']['title']['value']
+        try:
+            journalTitle = research['work-summary'][0]['journal-title']['value']
+        except:
+            journalTitle = ""
+        try:
+            articleURL = research['work-summary'][0]['url']['value']
+        except:
+            articleURL = ""
+        publishDate = ""
+        try:
+            publishDate = publishDate + research['work-summary'][0]['publication-date']['year']['value']
+        except: pass
+        try:
+            publishDate = publishDate + "-" + research['work-summary'][0]['publication-date']['month']['value']
+        except: pass
+        try:
+            publishDate = publishDate + "-" + research['work-summary'][0]['publication-date']['day']['value']
+        except: pass
+        if articleURL == "":
+            articleURL = articleTitle
+        else:
+            articleURL = '<a href="' + articleURL + '">' + articleTitle + '</a>'
+        resultBuilder = (resultBuilder + '<div class="card' + " page" + str(pageCounter) + '" style="width: 70%;"><div class="card-body"><h5 class="card-title">' + articleURL 
+        + '</h5></h6><h6 class="card-subtitle mb-2 text-muted">' + journalTitle + '</h6><h6 class="card-subtitle mb-2 text-muted"><right>Date Published: ' + publishDate + 
+            '</right></h6> </div></div>')
+        i = i + 1
+        if (i % 10 == 0):
+            pageBuilder = pageBuilder + '<li class="page-item"><a class="page-link" href="javascript:;" onclick="showPage(' + str(pageCounter) + ')">' + str(pageCounter) + '</a></li>'
+            pageCounter = pageCounter + 1
+        if pageCounter == 1:
+            pageBuilder = ""
+    if resultBuilder == "":
+        noArticles = '1'
     return render_template(
-        "research.html"
+        "research.html", researcherName = researcherName, researcherInstitution = researcherInstitution, results=resultBuilder, pages=pageBuilder, maxPageNumber=pageCounter, noArticles=noArticles
     )
 
 

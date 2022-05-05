@@ -20,8 +20,9 @@
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
     crossorigin="anonymous"></script>
 
-  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/style.css') }}">
- 
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/style.css') }}">
+  <script src="{{ url_for('static', filename='pagination.js') }}"></script>
+
   <title>Knowledge Scrape!</title>
 </head>
 
@@ -48,7 +49,7 @@
       <!-- Begin right hand side of navbar - user accounts and stuff will go here -->
 
 
-      {% if session['logged_in'] == True %}
+      {% if user%}
       <!-- NOTE: Remove this if statment and the else down below to see the menu bar. this is setup now for the user later -->
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-1 ">
@@ -92,25 +93,60 @@
 
 
 
-<!--CONTENT HERE-->
-
-
-
-
-
-
-
-<!--END CONTENT-->
-
-
-  <footer class="text-center text-white fixed-bottom">
-
-    <div class="text-center p-3" style="background-color: rgb(0, 154, 82);">
-      © 2022 Knowledge Scrape |
-      <a class="text-white" href="https://www.charlotte.edu/">University of North Carolina at Charlotte</a>
-    </div>
-    <!-- Copyright -->
-  </footer>
   
-  </html>
-  
+
+
+    <!-- Content here -->
+
+    <div class="results-list">
+    <br>
+      
+    <h1>{{ researcherName }}</h1>
+    <h2>{{ researcherInstitution }}</h2>
+    {% if noArticles|length %}
+      <h3>This individual does not appear to have anything published.</h3>
+    {% endif%}
+    <br>
+    <p id="maxPageNumber" hidden>{{ maxPageNumber }}</p>
+    <p id="currentPageText"></p>
+
+    
+    {{ results|safe}}
+    
+    <br>
+
+    <nav aria-label="results-pagination">
+      <ul class="pagination">
+        <li class="page-item">
+          <a class="page-link" href="javascript:;" aria-label="Previous" onClick="previousPage()">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        {{ pages|safe}}
+        <li class="page-item">
+          <a class="page-link" href="javascript:;" aria-label="Next" onClick="nextPage()">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+
+
+
+</body>
+
+
+
+
+<footer class="text-center text-white">
+
+  <div class="text-center p-3" style="background-color: rgb(0, 154, 82);">
+    © 2022 Knowledge Scrape |
+    <a class="text-white" href="https://www.charlotte.edu/">University of North Carolina at Charlotte</a>
+  </div>
+  <!-- Copyright -->
+</footer>
+
+</html>
