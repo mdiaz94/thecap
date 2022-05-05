@@ -3,7 +3,12 @@ import json
 import arxiv
 import datetime
 
-start_time = datetime.datetime.now()
+class customResult: 
+    def __init__(self, title, doi, cites, publication): 
+        self.title = title
+        self.doi = doi
+        self.cites = cites
+        self.publication = publication
 
 searchResults = arxiv.Search (
                 query = "cybersecurity",
@@ -25,7 +30,6 @@ else:
     payload = payload + "\n\t\"" + i + '"'
 
 payload = payload + "]"
-print(payload)
 
 response = requests.request("POST", "https://api.scite.ai/tallies", headers={}, data=payload)
 
@@ -36,31 +40,20 @@ for doi in data['tallies']:
     talliCiting = data['tallies'][doi]['citingPublications']
     doiDict[tallieDoi] = talliCiting
 
-sortedDoiDict = {}
-sortedDoiDictKey = sorted(doiDict, key=doiDict.get, reverse=True)
+customResultList = []
+for result in searchResults.results():
+    try:
+        result.doi + ""
+        customResultList.append(customResult(result.title,result.doi,doiDict[result.doi],result.journal_ref))
+    except: pass
 
-for w in sortedDoiDictKey :
-    sortedDoiDict[w] = doiDict[w]
+def sortFunc(e):
+    return e.cites
+sorted_results = customResultList
+sorted_results.sort(key=sortFunc, reverse = True)
 
-print(sortedDoiDict)
-
-for x in sortedDoiDict:
-    articleTitle = ""
-    for result in searchResults.results():
-        if result.doi == x:
-            articleTitle = result.title
-            break
-    if articleTitle == "":
-        pass
-    else:
-        print(articleTitle)
-        print(x)
-        print(sortedDoiDict[x])
-
-end_time = datetime.datetime.now()
-
-time_diff = (end_time - start_time)
-
-execution_time = time_diff.total_seconds() * 1000
-
-print(execution_time)
+for result in sorted_results:
+    print(result.title)
+    print(result.publication)
+    print(result.doi)
+    print(result.cites)
