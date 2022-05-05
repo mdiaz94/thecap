@@ -9,6 +9,7 @@ import string
 import random
 import requests
 import json
+from bs4 import BeautifulSoup
 
 app = Flask(__name__)
 datatwo = Any
@@ -143,7 +144,48 @@ def filter():
     return render_template(
         "index.html"
     )
+@app.route("/filter1", methods= ['POST', 'GET'])
+def filter1():
+    if request.method == "POST":
+        global searchResults
+        i = 0
+        pageCounter = 1
+        resultBuilder = ""
+        pageBuilder = ''
+        
+        for result in searchResults.results():
+            try:
+            
+                result.journal_ref + "test string"
+                publication = result.journal_ref
+            except:
+                publication = 'arXiv preprint'
+            publishdate = result.published.strftime('%d %B, %y')
+            authorstring = ""
+            for author in result.authors:
+                authorstring = authorstring + author.name + ", "
+            authorstring = authorstring[:-2]
+            #Loops through the URLS and webscrapes all subjects, takes a good minunte for it to happen
+            page=requests.get(result.entry_id)
+            soup=BeautifulSoup(page.text,"html.parser")
+            quotes=soup.find("span",attrs={"class" : "primary-subject"})
 
+            resultBuilder = (resultBuilder + '<div class="card' + " page" + str(pageCounter) +'" style="width: 70%;"><div class="card-body"><h5 class="card-title"><a href="' + 
+            result.entry_id + '">' + result.title + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + authorstring + '</h6><h6 class="card-subtitle mb-2 text-muted">' + publication + '</h6><h6 class="card-subtitle mb-2 text-muted"><right>Date Published: ' + publishdate + '</right></h6>' + '<h6 class="card-subtitle mb-2 text-muted"><right>Subject: '+ str(quotes.text) +
+            '</right></h6> </div><a href="/addbookmark?id=' + result.entry_id + '" type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</a></div>') 
+            #resultBuilder = resultBuilder + '<p><a href="https://doi.org/' + datatwo[i]['prism:doi'] + '">' + datatwo[i]['dc:title'] + '</a></p>'
+            i = i+1
+            if (i % 10 == 0):
+                pageBuilder = pageBuilder + '<li class="page-item"><a class="page-link" href="javascript:;" onclick="showPage(' + str(pageCounter) + ')">' + str(pageCounter) + '</a></li>'
+                pageCounter = pageCounter + 1
+                
+        if pageCounter == 1:
+            pageBuilder = ""
+            
+        return render_template("results.html", results=resultBuilder, pages=pageBuilder, maxPageNumber=pageCounter)
+    return render_template(
+        "index.html"
+    )
 @app.route('/search', methods = ['POST', 'GET'])
 def searchFuture():
     #not using this code rn
