@@ -1,9 +1,12 @@
 import requests
 import json
 import arxiv
+import datetime
+
+start_time = datetime.datetime.now()
 
 searchResults = arxiv.Search (
-                query = "covid",
+                query = "cybersecurity",
                 max_results = 100
 )
 
@@ -40,4 +43,24 @@ for w in sortedDoiDictKey :
     sortedDoiDict[w] = doiDict[w]
 
 print(sortedDoiDict)
-    
+
+for x in sortedDoiDict:
+    articleTitle = ""
+    for result in searchResults.results():
+        if result.doi == x:
+            articleTitle = result.title
+            break
+    if articleTitle == "":
+        pass
+    else:
+        print(articleTitle)
+        print(x)
+        print(sortedDoiDict[x])
+
+end_time = datetime.datetime.now()
+
+time_diff = (end_time - start_time)
+
+execution_time = time_diff.total_seconds() * 1000
+
+print(execution_time)
