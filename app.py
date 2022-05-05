@@ -7,6 +7,8 @@ import arxiv
 from datetime import datetime
 import string
 import random
+import requests
+import json
 
 app = Flask(__name__)
 datatwo = Any
@@ -73,6 +75,31 @@ def index():
     return render_template(
         "index.html"
     )
+
+@app.route("/researcher-search", methods = ['POST','GET'])
+def researcher_search():
+    if request.method == 'POST':
+        search = request.form['search']
+        resultBuilder = ""
+        pageBuilder = ''
+        pageCounter = 1
+        i = 0
+        r = requests.get("https://pub.orcid.org/v3.0/expanded-search/", params={"q":search,"rows":"100"}, headers={"Accept":"application/json"})
+        data = json.loads(r.content)
+        for researcher in data['expanded-result']:
+            if (researcher['institution-name']):
+                fullName = researcher['given-names'] + " " + researcher['family-names']
+                queryBuilder = "researchers?name=" + fullName + "&institution-name=" + researcher['institution-name'][0]
+                resultBuilder = (resultBuilder + '<div class="card' + " page" + str(pageCounter) + '" style="width: 70%;"><div class="card-body"><h5 class="card-title"><a href="' + 
+                queryBuilder + '">' + fullName + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + researcher['institution-name'][0] + '</h6></div></div>')
+                i = i + 1
+                if (i % 10 == 0):
+                    pageBuilder = pageBuilder + '<li class="page-item"><a class="page-link" href="javascript:;" onclick="showPage(' + str(pageCounter) + ')">' + str(pageCounter) + '</a></li>'
+                    pageCounter = pageCounter + 1
+        return render_template ("researcher-results.html", search=request.form['search'], results=resultBuilder, pages=pageBuilder, maxPageNumber=pageCounter)
+    else:
+        return render_template ("index.html")
+
 
 @app.route("/filter", methods= ['POST', 'GET'])
 def filter():
