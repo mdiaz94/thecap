@@ -327,7 +327,7 @@ def Topics():
         for result in search.results():
             print(result.title)
             resultBuilder = (resultBuilder + '<div class="card' + " page" + '" style="width: 70%;"><div class="card-body"><h5 class="card-title"><a href="' + 
-            result.entry_id + '">' + result.title + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' +  '</h6><h6 class="card-subtitle mb-2 text-muted"><right>Date Published: ' +  '</right></h6> </div><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</button></div>')
+            result.entry_id + '">' + result.title + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + '</right></h6> </div><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</button></div>')
         
         print(resultBuilder)
         return render_template("Topics.html", search=search, results=resultBuilder)
