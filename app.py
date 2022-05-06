@@ -1,4 +1,5 @@
 from pickle import TRUE
+from tkinter import messagebox
 from turtle import right
 from types import NoneType
 from typing import Any
@@ -206,7 +207,7 @@ def Topics():
 def addBookmark():
     if request.method == 'GET':
         if session.get("key") == None:
-            return render_template("index.html" ) 
+            return redirect("/login") 
         conn = sqlite3.connect("Users.db")
         c = conn.cursor()
         username = (session['Username'])
