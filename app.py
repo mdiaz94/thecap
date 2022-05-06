@@ -356,9 +356,20 @@ def addBookmark():
 
 @app.route("/bookmarks")
 def bookmark():
-    return render_template(
-        "bookmarks.html"
-    )
+    conn = sqlite3.connect("Users.db")
+    c = conn.cursor()
+    username = (session['Username'])
+    c.execute("SELECT * FROM bookmark WHERE name = '%s';"%(username))
+    bookmarks = c.fetchall()
+    temp = ""
+    if(bookmarks is not None):
+            for bookmark in bookmarks:
+                temp = temp + '<div class="card' + " page" + '" style="width: 70%;"><div class="card-body"><h5 class="card-title"><a href="' + bookmark[0] + '">' + bookmark[0] + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' +  '</h6></div></div>'
+    if(bookmarks is None):
+            bookmarks = "There are none"
+    conn.commit()
+    conn.close()
+    return render_template("bookmarks.html",bookmark = temp)
 
 '''end of Topics page'''
 @app.route("/researchers")
