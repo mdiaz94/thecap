@@ -1,7 +1,6 @@
 from pickle import TRUE
 from tkinter import messagebox
 from turtle import right
-from types import NoneType
 from typing import Any
 from flask import Flask, Request,redirect, session, url_for
 from flask import render_template
@@ -206,8 +205,6 @@ def Topics():
 @app.route("/addbookmark")
 def addBookmark():
     if request.method == 'GET':
-        if session.get("key") == None:
-            return redirect("/login") 
         conn = sqlite3.connect("Users.db")
         c = conn.cursor()
         username = (session['Username'])
@@ -215,11 +212,7 @@ def addBookmark():
         book = book.split("?id=")
         link = book[1]
         link = urllib.parse.unquote_plus(link)
-        c.execute("SELECT bookmark FROM bookmark WHERE bookmark = '%s' AND name = '%s'"%(link,username))
-        temp = c.fetchone
-        print(temp)
-        if(temp is None):
-            c.execute("INSERT INTO bookmark VALUES('%s','%s')"%(link,username))
+        c.execute("INSERT INTO bookmark VALUES('%s','%s')"%(link,username))
         conn.commit()
         conn.close()
     return redirect("/bookmarks")
@@ -227,8 +220,6 @@ def addBookmark():
 '''bookmark to database'''
 @app.route("/bookmarks")
 def bookmark():
-    if session.get("key") == None:
-        return redirect("/login")
     return render_template(
         "bookmarks.html"
     )
