@@ -227,6 +227,8 @@ def addBookmark():
 '''bookmark to database'''
 @app.route("/bookmarks")
 def bookmark():
+    if session.get("key") == None:
+        return redirect("/login")
     return render_template(
         "bookmarks.html"
     )
