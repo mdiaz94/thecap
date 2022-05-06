@@ -320,7 +320,7 @@ def logout():
 def Topics():
         string.ascii_letters
         search = random.choice(string.ascii_letters)
-        print(search + "this is the search term for 'topics'")
+        print(search + ": this is the search term for 'topics'")
         resultBuilder = ""
         search = arxiv.Search (
                 query = search,
@@ -330,35 +330,56 @@ def Topics():
 
         #---Area for random articles
         print("test")
-        resultBuilder = "<br><h2 class='container-md'>What's new at ARXIV?</h2>"
+        authorstring = ""
+        resultBuilder = "<br><h2 class='container-md'>Recently Published Articles to Explore?</h2>"
         for result in search.results():
             print("test")
             print(result.title)
+
+            for author in result.authors:
+                authorstring = authorstring + author.name + ", "
+            authorstring = authorstring[:-2]
+
             resultBuilder = (resultBuilder + '<div class="card' + " page" + '" style="width: 70%;"><div class="card-body"><h5 class="card-title"><a href="' + 
-            result.entry_id + '">' + result.title + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + '</right></h6> </div><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</button></div>')
+            result.entry_id + '">' + result.title + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + '</a></h5><h6 class="card-subtitle mb-2 text-muted"> AUTHORS: ' + authorstring + '</h6><h6 class="card-subtitle mb-2 text-muted">' + 
+            '</right></h6> </div><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</button></div>')
         
-        #---Area for science articles
-        resultBuilder = resultBuilder + "<br><h2 class='container-md'>Topics in SCIENCE</h2>"   
+        #---Area for Science articles
+        authorstringScience = ""
+        resultBuilder = resultBuilder + "<br><h2 class='container-md'>Recent Topics to Explore in SCIENCE</h2>"   
         searchScience = arxiv.Search (
                 query = "Science",
-                max_results = 3
+                max_results = 3,
+                sort_by = arxiv.SortCriterion.SubmittedDate
         )
         for result in searchScience.results():
             print("test")
             print(result.title)
+
+            for author in result.authors:
+                authorstringScience = authorstringScience + author.name + ", "
+            authorstringScience = authorstringScience[:-2]
+
             resultBuilder = (resultBuilder + '<div class="card' + " page" + '" style="width: 70%;"><div class="card-body"><h5 class="card-title"><a href="' + 
-            result.entry_id + '">' + result.title + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + '</right></h6> </div><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</button></div>')
+            result.entry_id + '">' + result.title + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + '</a></h5><h6 class="card-subtitle mb-2 text-muted"> AUTHORS: ' + authorstringScience + '</right></h6> </div><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</button></div>')
         #---Area for Technology
-        resultBuilder = resultBuilder + "<br><h2 class='container-md'>Topics in TECHNOLOGY</h2>"  
-        searchScience = arxiv.Search (
+        authorstringTechnology = ""
+        resultBuilder = resultBuilder + "<br><h2 class='container-md'>Recent Topics to explore in TECHNOLOGY</h2>"  
+        searchTechnology = arxiv.Search (
                 query = "Technology",
-                max_results = 3
+                max_results = 3,
+                sort_by = arxiv.SortCriterion.SubmittedDate
         )
-        for result in searchScience.results():
+        for result in searchTechnology.results():
             print("test")
             print(result.title)
+
+            for author in result.authors:
+                authorstringTechnology = authorstringTechnology + author.name + ", "
+            authorstringTechnology = authorstringTechnology[:-2]
+
             resultBuilder = (resultBuilder + '<div class="card' + " page" + '" style="width: 70%;"><div class="card-body"><h5 class="card-title"><a href="' + 
-            result.entry_id + '">' + result.title + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + '</right></h6> </div><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</button></div>')
+            result.entry_id + '">' + result.title + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + '</a></h5><h6 class="card-subtitle mb-2 text-muted"> AUTHORS: ' + authorstringTechnology   + '</right></h6> </div><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</button></div>')
        
 
 
