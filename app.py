@@ -205,7 +205,7 @@ def Topics():
 @app.route("/addbookmark")
 def addBookmark():
     if request.method == 'GET':
-        if session['logged_in'] == False:
+        if session.get("key") == None:
             return render_template("index.html" ) 
         conn = sqlite3.connect("Users.db")
         c = conn.cursor()
