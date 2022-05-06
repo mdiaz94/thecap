@@ -11,6 +11,7 @@ import requests
 import json
 from bs4 import BeautifulSoup
 import urllib
+import base64
 
 app = Flask(__name__)
 datatwo = Any
@@ -47,6 +48,7 @@ def index():
         pageBuilder = ''
         i = 0
         pageCounter = 1
+        authorCounter = 0
         searchResults = arxiv.Search (
                 query = search,
                 max_results = 100
@@ -62,9 +64,22 @@ def index():
             for author in result.authors:
                 authorstring = authorstring + author.name + ", "
             authorstring = authorstring[:-2]
+            new = ' &'
+            authorstring = new.join(authorstring.rsplit(",", 1))
+            apaCitationBuilder = authorstring + " (" + str(result.published.year) + "). " + '"' + result.title + '"' + '. ' + publication
+            apaCitationBuilder = urllib.parse.quote(apaCitationBuilder)
+            mlaAuthors = ""
+            if len(result.authors) == 1:
+                mlaAuthors = result.authors[0].name
+            if len(result.authors) >= 2:
+                mlaAuthors = result.authors[0].name + ", and " + result.authors[1].name
+            if len(result.authors) >= 3:
+                mlaAuthors = result.authors[0].name + ", et al"
+            mlaCitationBuilder = mlaAuthors + '. "' + result.title + '" ' + publication + " (" + str(result.published.year) + "). "
+            mlaCitationBuilder = urllib.parse.quote(mlaCitationBuilder)
             resultBuilder = (resultBuilder + '<div class="card' + " page" + str(pageCounter) + '" style="width: 70%;"><div class="card-body"><h5 class="card-title"><a href="' + 
             result.entry_id + '">' + result.title + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + authorstring + '</h6><h6 class="card-subtitle mb-2 text-muted">' + publication + '</h6><h6 class="card-subtitle mb-2 text-muted"><right>Date Published: ' + publishdate + 
-            '</right></h6> </div><a href="/addbookmark?id=' + result.entry_id + '" type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</a></div>')
+            '</right></h6> </div><a href="/addbookmark?id=' + result.entry_id + '" type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</a>' + '<a href="/cite?apa=' + apaCitationBuilder + '&mla=' + mlaCitationBuilder + '" type="button" target="_blank" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Cite Article</a>' + '</div>')
             #resultBuilder = resultBuilder + '<p><a href="https://doi.org/' + datatwo[i]['prism:doi'] + '">' + datatwo[i]['dc:title'] + '</a></p>'
             i = i+1
             if (i % 10 == 0):
@@ -396,6 +411,14 @@ def research():
     return render_template(
         "research.html", researcherName = researcherName, researcherInstitution = researcherInstitution, results=resultBuilder, pages=pageBuilder, maxPageNumber=pageCounter, noArticles=noArticles
     )
+
+@app.route("/cite")
+def cite():
+    args = request.args
+    args = args.to_dict()
+    apa = args.get('apa')
+    mla = args.get('mla')
+    return render_template ("cite.html", apa=apa, mla=mla)
 
 
 if __name__ == '__main__':
