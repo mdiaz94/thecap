@@ -39,7 +39,6 @@
       <div class="navbar-nav">
         <a type="button" class="btn btn-secondary btn-lg btn-margin-left" href="/index">Home</a>
         <button type="button" class="btn btn-secondary btn-lg active btn-margin-left" href="/Topics">Topics</button>
-        <button type="button" class="btn btn-secondary btn-lg btn-margin-left">Accounts</button>
         <!-- This is where we can add more links if need be -->
 
       </div>
@@ -57,7 +56,7 @@
               My account
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" >Hello, {{session.Username}}!</a>
+              <div class="dropdown-item" >Hello, {{session.Username}}!</div>
               <a class="dropdown-item" href="/bookmarks">Bookmarks</a>
               <a class="dropdown-item" href="/logout">Logout</a>
             </div>
