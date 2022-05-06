@@ -215,15 +215,13 @@ def addBookmark():
         link = book[1]
         link = urllib.parse.unquote_plus(link)
         c.execute("SELECT bookmark FROM bookmark WHERE bookmark = '%s' AND name = '%s'"%(link,username))
-        temp = c.fetchone()
+        temp = c.fetchone
         print(temp)
         if(temp is None):
             c.execute("INSERT INTO bookmark VALUES('%s','%s')"%(link,username))
         conn.commit()
         conn.close()
-    return render_template(
-        "bookmarks.html"
-    )
+    return redirect("/bookmarks")
 
 '''bookmark to database'''
 @app.route("/bookmarks")
