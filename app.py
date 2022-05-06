@@ -309,6 +309,7 @@ def Signin():
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
+    session.pop('Username', None)
     return redirect(url_for('index'))
 
 
@@ -366,7 +367,7 @@ def bookmark():
             for bookmark in bookmarks:
                 temp = temp + '<div class="card' + " page" + '" style="width: 70%;"><div class="card-body"><h5 class="card-title"><a href="' + bookmark[0] + '">' + bookmark[0] + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' +  '</h6></div></div>'
     if(bookmarks is None):
-            bookmarks = "There are none"
+            temp = "There are none"
     conn.commit()
     conn.close()
     return render_template("bookmarks.html",bookmark = temp)
