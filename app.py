@@ -1,3 +1,4 @@
+from pickle import NONE
 from typing import Any
 from flask import Flask,redirect, session, url_for
 from flask import render_template
@@ -324,6 +325,8 @@ def Topics():
 @app.route("/addbookmark")
 def addBookmark():
     if request.method == 'GET':
+        if('Username' not in session):
+            return redirect("/login")
         conn = sqlite3.connect("Users.db")
         c = conn.cursor()
         username = (session['Username'])
