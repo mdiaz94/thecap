@@ -110,16 +110,43 @@ def researcher_search():
 def filter():
     if request.method == "POST":
         global searchResults
-        if request.form['Date'] == "one":
+        list_results = list(searchResults.results())
+        #the comment variable of an result will say if the article is in a foregin language in the same sentence as other information
+        Spanish = 'in Spanish'
+        French = 'in French'
+        frenchlist = list(searchResults.results())
+        spanishlist = list(searchResults.results())
+        filtered_results = list(searchResults.results())
+        frenchlist.clear()
+        spanishlist.clear()
+        filtered_results.clear()
+        for result in list_results:
+                if result.comment != None and French in result.comment:
+                    frenchlist.append(result)
+                if result.comment != None and Spanish in result.comment:
+                    spanishlist.append(result)
+        if request.form.get('English') == "one":
+            for result in list_results:
+                if result.comment != None and French in result.comment:
+                    break
+                if result.comment != None and Spanish in result.comment:
+                    break
+                filtered_results.append(result)
+        if request.form.get('Spanish') == "one":
+            filtered_results = filtered_results + spanishlist
+        if request.form.get('French') == "one":
+            filtered_results = filtered_results + frenchlist
+        if (request.form.get('English') is None) and (request.form.get('Spanish') is None) and (request.form.get('French') is None):
+            filtered_results=list(searchResults.results())
+        if request.form.get('Date') == "one":
             def sortFunc(e):
                 return e.published
-            sorted_results = list(searchResults.results())
-            sorted_results.sort(key=sortFunc, reverse = True)
-            i = 0
-            pageCounter = 1
-            resultBuilder = ""
-            pageBuilder = ''
-        for result in sorted_results:
+            filtered_results.sort(key=sortFunc, reverse = True)
+        i = 0
+        pageCounter = 1
+        resultBuilder = ""
+        pageBuilder = ''
+        for result in filtered_results:
             try:
                 result.journal_ref + "test string"
                 publication = result.journal_ref
@@ -144,7 +171,8 @@ def filter():
         return render_template("results.html", results=resultBuilder, pages=pageBuilder, maxPageNumber=pageCounter)
     return render_template(
         "index.html"
-    )
+    )        
+
 @app.route("/filter1", methods= ['POST', 'GET'])
 def filter1():
     if request.method == "POST":
