@@ -231,6 +231,8 @@ def filter1():
     return render_template(
         "index.html"
     )
+
+
 @app.route('/search', methods = ['POST', 'GET'])
 def searchFuture():
     #not using this code rn
@@ -318,18 +320,50 @@ def logout():
 def Topics():
         string.ascii_letters
         search = random.choice(string.ascii_letters)
-        print(search)
+        print(search + "this is the search term for 'topics'")
         resultBuilder = ""
         search = arxiv.Search (
                 query = search,
                 max_results = 3
         )
-        
+
+
+        #---Area for random articles
+        print("test")
+        resultBuilder = "<br><h2 class='container-md'>What's new at ARXIV?</h2>"
         for result in search.results():
+            print("test")
             print(result.title)
             resultBuilder = (resultBuilder + '<div class="card' + " page" + '" style="width: 70%;"><div class="card-body"><h5 class="card-title"><a href="' + 
             result.entry_id + '">' + result.title + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + '</right></h6> </div><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</button></div>')
         
+        #---Area for science articles
+        resultBuilder = resultBuilder + "<br><h2 class='container-md'>Topics in SCIENCE</h2>"   
+        searchScience = arxiv.Search (
+                query = "Science",
+                max_results = 3
+        )
+        for result in searchScience.results():
+            print("test")
+            print(result.title)
+            resultBuilder = (resultBuilder + '<div class="card' + " page" + '" style="width: 70%;"><div class="card-body"><h5 class="card-title"><a href="' + 
+            result.entry_id + '">' + result.title + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + '</right></h6> </div><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</button></div>')
+        #---Area for Technology
+        resultBuilder = resultBuilder + "<br><h2 class='container-md'>Topics in TECHNOLOGY</h2>"  
+        searchScience = arxiv.Search (
+                query = "Technology",
+                max_results = 3
+        )
+        for result in searchScience.results():
+            print("test")
+            print(result.title)
+            resultBuilder = (resultBuilder + '<div class="card' + " page" + '" style="width: 70%;"><div class="card-body"><h5 class="card-title"><a href="' + 
+            result.entry_id + '">' + result.title + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + '</right></h6> </div><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</button></div>')
+       
+
+
+
+
         print(resultBuilder)
         return render_template("Topics.html", search=search, results=resultBuilder)
         #return resultBuilder
