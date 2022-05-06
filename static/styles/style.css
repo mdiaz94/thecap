@@ -28,3 +28,9 @@
     width: 50px;
     background-color: #555;
   }
+
+#cite {
+    margin-left: 75px;
+	  margin-right: 75px;
+    width: 80%;
+}
