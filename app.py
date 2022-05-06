@@ -144,9 +144,9 @@ def filter():
         if request.form.get('English') == "one":
             for result in list_results:
                 if result.comment != None and French in result.comment:
-                    break
+                    continue
                 if result.comment != None and Spanish in result.comment:
-                    break
+                    continue
                 filtered_results.append(result)
         if request.form.get('Spanish') == "one":
             filtered_results = filtered_results + spanishlist
