@@ -144,9 +144,9 @@ def filter():
         if request.form.get('English') == "one":
             for result in list_results:
                 if result.comment != None and French in result.comment:
-                    break
+                    continue
                 if result.comment != None and Spanish in result.comment:
-                    break
+                    continue
                 filtered_results.append(result)
         if request.form.get('Spanish') == "one":
             filtered_results = filtered_results + spanishlist
@@ -231,6 +231,8 @@ def filter1():
     return render_template(
         "index.html"
     )
+
+
 @app.route('/search', methods = ['POST', 'GET'])
 def searchFuture():
     #not using this code rn
@@ -309,6 +311,7 @@ def Signin():
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
+    session.pop('Username', None)
     return redirect(url_for('index'))
 
 
@@ -317,18 +320,71 @@ def logout():
 def Topics():
         string.ascii_letters
         search = random.choice(string.ascii_letters)
-        print(search)
+        print(search + ": this is the search term for 'topics'")
         resultBuilder = ""
         search = arxiv.Search (
                 query = search,
                 max_results = 3
         )
-        
+
+
+        #---Area for random articles
+        print("test")
+        authorstring = ""
+        resultBuilder = "<br><h2 class='container-md'>Recently Published Articles to Explore?</h2>"
         for result in search.results():
+            print("test")
             print(result.title)
+
+            for author in result.authors:
+                authorstring = authorstring + author.name + ", "
+            authorstring = authorstring[:-2]
+
             resultBuilder = (resultBuilder + '<div class="card' + " page" + '" style="width: 70%;"><div class="card-body"><h5 class="card-title"><a href="' + 
-            result.entry_id + '">' + result.title + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' +  '</h6><h6 class="card-subtitle mb-2 text-muted"><right>Date Published: ' +  '</right></h6> </div><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</button></div>')
+            result.entry_id + '">' + result.title + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + '</a></h5><h6 class="card-subtitle mb-2 text-muted"> AUTHORS: ' + authorstring + '</h6><h6 class="card-subtitle mb-2 text-muted">' + 
+            '</right></h6> </div><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</button></div>')
         
+        #---Area for Science articles
+        authorstringScience = ""
+        resultBuilder = resultBuilder + "<br><h2 class='container-md'>Recent Topics to Explore in SCIENCE</h2>"   
+        searchScience = arxiv.Search (
+                query = "Science",
+                max_results = 3,
+                sort_by = arxiv.SortCriterion.SubmittedDate
+        )
+        for result in searchScience.results():
+            print("test")
+            print(result.title)
+
+            for author in result.authors:
+                authorstringScience = authorstringScience + author.name + ", "
+            authorstringScience = authorstringScience[:-2]
+
+            resultBuilder = (resultBuilder + '<div class="card' + " page" + '" style="width: 70%;"><div class="card-body"><h5 class="card-title"><a href="' + 
+            result.entry_id + '">' + result.title + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + '</a></h5><h6 class="card-subtitle mb-2 text-muted"> AUTHORS: ' + authorstringScience + '</right></h6> </div><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</button></div>')
+        #---Area for Technology
+        authorstringTechnology = ""
+        resultBuilder = resultBuilder + "<br><h2 class='container-md'>Recent Topics to explore in TECHNOLOGY</h2>"  
+        searchTechnology = arxiv.Search (
+                query = "Technology",
+                max_results = 3,
+                sort_by = arxiv.SortCriterion.SubmittedDate
+        )
+        for result in searchTechnology.results():
+            print("test")
+            print(result.title)
+
+            for author in result.authors:
+                authorstringTechnology = authorstringTechnology + author.name + ", "
+            authorstringTechnology = authorstringTechnology[:-2]
+
+            resultBuilder = (resultBuilder + '<div class="card' + " page" + '" style="width: 70%;"><div class="card-body"><h5 class="card-title"><a href="' + 
+            result.entry_id + '">' + result.title + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' + '</a></h5><h6 class="card-subtitle mb-2 text-muted"> AUTHORS: ' + authorstringTechnology   + '</right></h6> </div><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-bookmark"></span> Bookmark</button></div>')
+       
+
+
+
+
         print(resultBuilder)
         return render_template("Topics.html", search=search, results=resultBuilder)
         #return resultBuilder
@@ -356,9 +412,20 @@ def addBookmark():
 
 @app.route("/bookmarks")
 def bookmark():
-    return render_template(
-        "bookmarks.html"
-    )
+    conn = sqlite3.connect("Users.db")
+    c = conn.cursor()
+    username = (session['Username'])
+    c.execute("SELECT * FROM bookmark WHERE name = '%s';"%(username))
+    bookmarks = c.fetchall()
+    temp = ""
+    if(bookmarks is not None):
+            for bookmark in bookmarks:
+                temp = temp + '<div class="card' + " page" + '" style="width: 70%;"><div class="card-body"><h5 class="card-title"><a href="' + bookmark[0] + '">' + bookmark[0] + '</a></h5><h6 class="card-subtitle mb-2 text-muted">' +  '</h6></div></div>'
+    if(bookmarks is None):
+            temp = "There are none"
+    conn.commit()
+    conn.close()
+    return render_template("bookmarks.html",bookmark = temp)
 
 '''end of Topics page'''
 @app.route("/researchers")
