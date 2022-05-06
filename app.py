@@ -1,6 +1,3 @@
-from pickle import TRUE
-from tkinter import messagebox
-from turtle import right
 from typing import Any
 from flask import Flask,redirect, session, url_for
 from flask import render_template
